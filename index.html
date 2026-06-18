@@ -302,13 +302,19 @@ const $ = id => document.getElementById(id);
 const fmt = v => "R$ " + (v||0).toFixed(2).replace('.',',');
 
 function totalCarrinho(){ return carrinho.reduce((s,i)=>s+i.combo.preco*i.qtd,0); }
-function totalMolhos(){ return 0; }
+function totalCombosNoCarrinho(){ return carrinho.reduce((s,i)=>s+i.qtd,0); }
+function totalMolhos(){
+  const gratis = totalCombosNoCarrinho() * 2;
+  const totalMolhosSelecionados = Object.values(molhos).reduce((s,q)=>s+q,0);
+  const extras = Math.max(0, totalMolhosSelecionados - gratis);
+  return extras * 2;
+}
 function totalBebidas(){
   return (cardapioAtual.bebidas||[]).filter(b=>b.disponivel!==false).reduce((s,b)=>{
     return s + (bebidas[b.nome]||0) * (b.preco||0);
   },0);
 }
-function totalGeral(){ return totalCarrinho() + totalBebidas() + taxaBairroAtual; }
+function totalGeral(){ return totalCarrinho() + totalMolhos() + totalBebidas() + taxaBairroAtual; }
 
 function renderCarrinho(){
   const el = $('listaCarrinho');
@@ -361,7 +367,13 @@ function renderCombos(){
 
 function renderMolhos(){
   const lista = (cardapioAtual.molhos||[]).filter(m=>m.disponivel!==false);
-  $('listaMolhos').innerHTML = lista.map(m=>`
+  const gratis = totalCombosNoCarrinho() * 2;
+  const usados = Object.values(molhos).reduce((s,q)=>s+q,0);
+  const restam = Math.max(0, gratis - usados);
+  const aviso = gratis > 0
+    ? `<div style="font-size:12px;color:var(--creme-fraco);margin-bottom:10px;">🎁 ${restam > 0 ? restam+' molho(s) grátis restante(s)' : 'Molhos extras: R$ 2,00 cada'}</div>`
+    : '<div style="font-size:12px;color:var(--creme-fraco);margin-bottom:10px;">Adicione um combo para ganhar molhos grátis.</div>';
+  $('listaMolhos').innerHTML = aviso + lista.map(m=>`
     <div class="item-qtd">
       <span class="nome-item">${m.nome}</span>
       <div class="ctrl-qtd">
@@ -375,7 +387,8 @@ window.alterarMolho = (nome,d)=>{
   molhos[nome] = Math.max(0,(molhos[nome]||0)+d);
   const el = document.getElementById('qtdMolho_'+nome.replace(/\s/g,'_'));
   if(el) el.textContent = molhos[nome];
-  validar();
+  renderMolhos();
+  atualizarTotal(); validar();
 };
 
 function renderBebidas(){
