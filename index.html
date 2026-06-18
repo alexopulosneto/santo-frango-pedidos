@@ -370,9 +370,11 @@ function renderMolhos(){
   const gratis = totalCombosNoCarrinho() * 2;
   const usados = Object.values(molhos).reduce((s,q)=>s+q,0);
   const restam = Math.max(0, gratis - usados);
-  const aviso = gratis > 0
-    ? `<div style="font-size:12px;color:var(--creme-fraco);margin-bottom:10px;">🎁 ${restam > 0 ? restam+' molho(s) grátis restante(s)' : 'Molhos extras: R$ 2,00 cada'}</div>`
-    : '<div style="font-size:12px;color:var(--creme-fraco);margin-bottom:10px;">Adicione um combo para ganhar molhos grátis.</div>';
+  const aviso = gratis === 0
+    ? `<div style="background:rgba(200,73,42,0.12);border:1.5px solid rgba(200,73,42,0.35);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;color:#E8856A;">⚠️ Adicione um combo para ganhar molhos grátis.</div>`
+    : restam > 0
+      ? `<div style="background:rgba(122,154,82,0.15);border:1.5px solid #7A9A52;border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;color:#A5C97A;">🎁 ${usados} de ${gratis} molhos grátis usados — ainda restam ${restam} grátis!</div>`
+      : `<div style="background:rgba(200,73,42,0.12);border:1.5px solid rgba(200,73,42,0.5);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;font-weight:700;color:#E8856A;">⚠️ Todos os ${gratis} molhos grátis já foram usados — cada molho extra custa R$ 2,00.</div>`;
   $('listaMolhos').innerHTML = aviso + lista.map(m=>`
     <div class="item-qtd">
       <span class="nome-item">${m.nome}</span>
