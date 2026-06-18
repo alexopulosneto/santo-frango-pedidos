@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#15110D">
+<title>Santo Frango — Fazer Pedido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --preto:#15110D;--superficie:#1E1812;--superficie-2:#2A2117;
+  --borda:#3A2D1D;--dourado:#E8A33D;--dourado-claro:#F4C570;
+  --brasa:#C8492A;--creme:#F7EFE1;--creme-fraco:#BFB09A;
+  --selo:#4A3018;--verde:#7A9A52;--raio:16px;--raio-sm:10px;
+  --fonte-display:'Titan One','Arial Black',sans-serif;
+  --fonte-corpo:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --fonte-mono:'JetBrains Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--preto);color:var(--creme);font-family:var(--fonte-corpo);-webkit-font-smoothing:antialiased;padding-bottom:120px;}
+.container{max-width:560px;margin:0 auto;}
+:focus-visible{outline:2px solid var(--dourado-claro);outline-offset:2px;}
+
+/* TOPO */
+.topo{position:relative;overflow:hidden;}
+.topo-fundo{height:160px;background:linear-gradient(180deg,rgba(21,17,13,0.4) 0%,rgba(21,17,13,0.95) 90%,var(--preto) 100%);background-color:#2A1A08;}
+.topo-conteudo{position:relative;margin-top:-56px;text-align:center;padding:0 24px 18px;}
+.logo-badge{width:96px;height:96px;border-radius:50%;border:3px solid var(--preto);box-shadow:0 0 0 3px var(--dourado),0 8px 18px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;background:var(--selo);font-size:42px;}
+.topo h1{font-family:var(--fonte-display);font-size:28px;color:var(--dourado);margin:0 0 4px;text-shadow:0 2px 0 rgba(0,0,0,0.4);}
+.topo .tagline{margin:0;color:var(--creme-fraco);font-size:14px;}
+
+/* SEÇÕES */
+main{padding:6px 18px 0;}
+.bloco{margin:24px 0;}
+.bloco h2{font-family:var(--fonte-corpo);font-weight:800;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--creme);display:flex;align-items:center;gap:10px;margin:0 0 14px;}
+.bloco h2 .num{width:22px;height:22px;border-radius:50%;background:var(--dourado);color:var(--preto);font-family:var(--fonte-mono);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none;}
+.opcional{color:var(--creme-fraco);font-weight:500;text-transform:none;letter-spacing:0;font-size:12px;}
+
+/* CARRINHO */
+.carrinho-vazio{text-align:center;padding:28px;border:1.5px dashed var(--borda);border-radius:var(--raio);color:var(--creme-fraco);font-size:13.5px;}
+.item-carrinho{background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;}
+.item-carrinho .info{flex:1;min-width:0;}
+.item-carrinho .nome{font-weight:700;font-size:14.5px;color:var(--creme);}
+.item-carrinho .detalhe{font-size:12px;color:var(--creme-fraco);margin-top:3px;}
+.item-carrinho .preco-item{font-family:var(--fonte-mono);font-weight:700;color:var(--dourado-claro);font-size:14px;margin-top:4px;}
+.btn-remover{background:none;border:none;color:var(--creme-fraco);cursor:pointer;padding:4px;border-radius:6px;display:flex;align-items:center;}
+.btn-remover:hover{color:var(--brasa);}
+
+/* CONTROLE QUANTIDADE */
+.ctrl-qtd{display:flex;align-items:center;gap:10px;margin-top:8px;}
+.ctrl-qtd button{width:30px;height:30px;border-radius:50%;background:var(--superficie-2);border:1.5px solid var(--borda);color:var(--creme);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--fonte-mono);}
+.ctrl-qtd button:hover{border-color:var(--dourado);}
+.ctrl-qtd .qtd-num{font-family:var(--fonte-mono);font-weight:700;font-size:15px;min-width:24px;text-align:center;}
+
+/* CARDS COMBO */
+.grade-combos{display:flex;flex-direction:column;gap:10px;}
+.cartao-combo{background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;text-align:left;width:100%;}
+.cartao-combo:hover{border-color:var(--dourado-claro);}
+.cartao-combo .info{flex:1;min-width:0;}
+.cartao-combo .nome{font-weight:700;font-size:15px;color:var(--creme);}
+.cartao-combo .desc{font-size:12px;color:var(--creme-fraco);margin-top:2px;line-height:1.4;}
+.cartao-combo .precos{flex:none;text-align:right;}
+.cartao-combo .preco{font-family:var(--fonte-mono);font-weight:700;color:var(--dourado-claro);font-size:15px;}
+.cartao-combo .preco-original{font-family:var(--fonte-mono);font-size:11px;color:var(--creme-fraco);text-decoration:line-through;display:block;}
+.btn-adicionar{background:var(--dourado);border:none;border-radius:999px;color:var(--preto);font-weight:800;font-size:12px;padding:7px 14px;cursor:pointer;white-space:nowrap;flex:none;font-family:var(--fonte-corpo);}
+
+/* MOLHOS E BEBIDAS COM QUANTIDADE */
+.lista-qtd{display:flex;flex-direction:column;gap:8px;}
+.item-qtd{background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.item-qtd .nome-item{flex:1;font-size:14px;font-weight:600;color:var(--creme);}
+.item-qtd .preco-extra{font-family:var(--fonte-mono);font-size:12px;color:var(--creme-fraco);}
+.item-qtd .ctrl-qtd{margin-top:0;}
+
+/* CAMPOS */
+label{display:block;font-size:13px;font-weight:600;color:var(--creme-fraco);margin-bottom:14px;}
+input[type=text],input[type=tel],input[type=number],textarea{width:100%;margin-top:6px;background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio-sm);padding:13px 14px;color:var(--creme);font-family:var(--fonte-corpo);font-size:15px;}
+input::placeholder,textarea::placeholder{color:#6E6253;}
+textarea{resize:vertical;min-height:64px;}
+.linha-dupla{display:grid;grid-template-columns:1fr 1.5fr;gap:10px;}
+.campo-autocomplete{position:relative;}
+.sugestoes{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:var(--superficie-2);border:1.5px solid var(--borda);border-radius:var(--raio-sm);max-height:220px;overflow-y:auto;z-index:30;box-shadow:0 10px 24px rgba(0,0,0,0.5);display:none;}
+.sugestoes.mostrar{display:block;}
+.sugestao-item{display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;background:none;border:none;color:var(--creme);font-family:var(--fonte-corpo);font-size:13px;padding:11px 13px;cursor:pointer;border-bottom:1px solid var(--borda);line-height:1.35;}
+.sugestao-item:last-child{border-bottom:none;}
+.sugestao-item:hover{background:rgba(232,163,61,0.1);}
+.sugestao-carregando{padding:11px 13px;font-size:13px;color:var(--creme-fraco);}
+
+/* CHIPS PAGAMENTO */
+.chips{display:flex;flex-wrap:wrap;gap:9px;}
+.chip{background:var(--superficie);border:1.5px solid var(--borda);color:var(--creme);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:var(--fonte-corpo);}
+.chip.selecionado{background:var(--dourado);border-color:var(--dourado);color:var(--preto);}
+
+/* TROCO */
+.campo-troco{margin-top:12px;display:none;background:var(--superficie-2);border:1.5px solid var(--borda);border-radius:var(--raio-sm);padding:14px;}
+.campo-troco.mostrar{display:block;}
+.campo-troco p{margin:0 0 10px;font-size:13px;color:var(--creme-fraco);}
+.campo-troco input{margin-top:0;}
+
+/* BARRA FIXA */
+.barra-fixa{position:fixed;left:0;right:0;bottom:0;background:var(--superficie);border-top:1.5px solid var(--borda);padding:14px 18px calc(14px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:14px;max-width:560px;margin:0 auto;}
+.barra-fixa::before{content:"";position:absolute;top:-7px;left:0;right:0;height:14px;background-image:radial-gradient(circle at 14px 7px,var(--preto) 7px,transparent 7.5px);background-size:28px 14px;background-repeat:repeat-x;}
+.resumo{flex:1;min-width:0;}
+.resumo-label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--creme-fraco);}
+.resumo-valor{font-family:var(--fonte-mono);font-weight:700;font-size:21px;color:var(--dourado-claro);}
+#botaoConfirmar{flex:none;background:var(--dourado);color:var(--preto);border:none;border-radius:999px;padding:14px 22px;font-family:var(--fonte-corpo);font-weight:800;font-size:14px;cursor:pointer;}
+#botaoConfirmar:disabled{background:var(--borda);color:var(--creme-fraco);cursor:not-allowed;}
+
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(10,8,6,0.9);display:none;align-items:center;justify-content:center;padding:22px;z-index:100;}
+.overlay.mostrar{display:flex;}
+.ticket{background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio);max-width:380px;width:100%;padding:28px 24px 24px;text-align:center;max-height:86vh;overflow-y:auto;}
+.ticket .icone-sucesso{width:54px;height:54px;border-radius:50%;background:var(--verde);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--preto);}
+.ticket .icone-sucesso svg{width:28px;height:28px;}
+.ticket h2{font-family:var(--fonte-display);color:var(--dourado);font-size:22px;margin:0 0 8px;}
+.ticket p{color:var(--creme-fraco);font-size:13px;margin:0 0 18px;line-height:1.5;}
+.ticket-resumo{text-align:left;border-top:1.5px dashed var(--borda);border-bottom:1.5px dashed var(--borda);padding:14px 0;margin-bottom:18px;font-size:13px;}
+.ticket-resumo div{display:flex;justify-content:space-between;gap:10px;padding:3px 0;color:var(--creme-fraco);}
+.ticket-resumo div b{color:var(--creme);font-weight:600;text-align:right;}
+.ticket-resumo .total-linha b{color:var(--dourado-claro);font-family:var(--fonte-mono);}
+#botaoNovoPedido{width:100%;background:var(--dourado);color:var(--preto);border:none;border-radius:999px;padding:14px;font-family:var(--fonte-corpo);font-weight:800;font-size:14px;cursor:pointer;}
+footer{text-align:center;padding:18px;color:var(--creme-fraco);font-size:11px;}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-fundo"></div>
+  <div class="topo-conteudo">
+    <div class="logo-badge">🍗</div>
+    <h1>Santo Frango</h1>
+    <p class="tagline">Monte seu pedido e a gente leva até você</p>
+  </div>
+</header>
+
+<div class="container">
+<main>
+
+  <section class="bloco">
+    <h2><span class="num">🛒</span> Seu pedido</h2>
+    <div id="listaCarrinho">
+      <div class="carrinho-vazio">Nenhum item adicionado ainda.<br>Escolha um combo abaixo 👇</div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">1</span> Adicionar combo</h2>
+    <div class="grade-combos" id="listaCombos"></div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">2</span> Molhos</h2>
+    <div class="lista-qtd" id="listaMolhos"></div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">3</span> Bebidas <span class="opcional">(opcional)</span></h2>
+    <div class="lista-qtd" id="listaBebidas"></div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">4</span> Seus dados</h2>
+    <label>Nome completo
+      <input type="text" id="campoNome" placeholder="Como podemos te chamar">
+    </label>
+    <label>WhatsApp para contato
+      <input type="tel" id="campoTelefone" placeholder="(69) 9 9999-9999" maxlength="16">
+    </label>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">5</span> Endereço de entrega</h2>
+    <label class="campo-autocomplete">Rua / Avenida
+      <input type="text" id="campoRua" placeholder="Comece a digitar o nome da rua" autocomplete="off">
+      <div class="sugestoes" id="sugestoesEndereco"></div>
+    </label>
+    <div class="linha-dupla">
+      <label>Número<input type="text" id="campoNumero" placeholder="Nº" inputmode="numeric"></label>
+      <label>Bairro
+        <select id="campoBairro" style="width:100%;margin-top:6px;background:var(--superficie);border:1.5px solid var(--borda);border-radius:var(--raio-sm);padding:13px 14px;color:var(--creme);font-family:var(--fonte-corpo);font-size:15px;">
+          <option value="">Selecione...</option>
+          <option>Alpha Parque</option><option>Alphaville</option><option>Balneário Arco-Íris</option>
+          <option>Centro</option><option>Chácaras Brizon</option><option>Conjunto Halley</option>
+          <option>Eldorado</option><option>Floresta</option><option>Habitar Brasil</option>
+          <option>Habitar Brasil II</option><option>Incra</option><option>Industrial</option>
+          <option>Jardim Bandeirantes</option><option>Jardim Clodoaldo</option><option>Jardim Itália I</option>
+          <option>Jardim Itália II</option><option>Jardim Limoeiro</option><option>Jardim São Pedro I</option>
+          <option>Jardim São Pedro II</option><option>Jardim Saúde</option><option>Josino Brito</option>
+          <option>Liberdade</option><option>Morada do Bosque</option><option>Morada do Sol</option>
+          <option>Nova Esperança</option><option>Novo Cacoal</option><option>Novo Horizonte</option>
+          <option>Parque Fortaleza</option><option>Princesa Isabel</option>
+          <option>Residencial Parque Alvorada</option><option>Residencial Parque Brizon</option>
+          <option>Santo Antônio</option><option>Sete de Setembro</option><option>Sociedade Bela Vista</option>
+          <option>Teixeirão</option><option>Village do Sol</option><option>Village do Sol II</option>
+          <option>Vista Alegre</option><option>Outro bairro</option>
+        </select>
+      </label>
+    </div>
+    <div id="taxaBloco" style="display:none;margin-top:10px;border-radius:10px;padding:12px 16px;font-weight:700;align-items:center;gap:10px;font-size:14px;"></div>
+    <label>Ponto de referência <span class="opcional">(opcional)</span>
+      <input type="text" id="campoReferencia" placeholder="Ex: casa amarela, perto do mercado">
+    </label>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">6</span> Forma de pagamento</h2>
+    <div class="chips" id="listaPagamento"></div>
+    <div class="campo-troco" id="campoTroco">
+      <p>💵 Qual nota você vai usar pra pagar? (total: <span id="totalParaTroco">R$ 0,00</span>)</p>
+      <label style="margin:0">Vou pagar com
+        <input type="number" id="valorTroco" placeholder="Ex: 50,00" min="0" step="0.01" inputmode="decimal">
+      </label>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="num">7</span> Observações <span class="opcional">(opcional)</span></h2>
+    <textarea id="campoObs" placeholder="Ex: sem cebola, pouco sal, ponto da pimenta..."></textarea>
+  </section>
+
+</main>
+</div>
+
+<div class="barra-fixa">
+  <div class="resumo">
+    <span class="resumo-label">Total</span>
+    <span class="resumo-valor" id="valorTotal">R$ 0,00</span>
+  </div>
+  <button id="botaoConfirmar" type="button" disabled>Confirmar pedido</button>
+</div>
+
+<div class="overlay" id="overlaySucesso">
+  <div class="ticket">
+    <div class="icone-sucesso">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h2>Pedido enviado!</h2>
+    <p>O Santo Frango recebeu seu pedido e confirma em breve pelo WhatsApp.</p>
+    <div class="ticket-resumo" id="resumoFinal"></div>
+    <button id="botaoNovoPedido" type="button">Fazer novo pedido</button>
+  </div>
+</div>
+
+<footer>Santo Frango · Cacoal, RO</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChLCz_oV36K-hddzAzDTVYo7WXNKH1fw8",
+  authDomain: "santo-frango-b8deb.firebaseapp.com",
+  projectId: "santo-frango-b8deb",
+  storageBucket: "santo-frango-b8deb.firebasestorage.app",
+  messagingSenderId: "42747726573",
+  appId: "1:42747726573:web:4eee5e05d3095219f09ae4"
+};
+
+let db = null, firebaseOk = false;
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  firebaseOk = true;
+} catch(e) { console.error(e); }
+
+const CARDAPIO_PADRAO = {
+  combos:[
+    {id:'c1',nome:"Combo Família",descricao:"500g de frango + batata frita + anéis de cebola",preco:87.90,disponivel:true},
+    {id:'c2',nome:"Combo Amigos + Coca 2L",descricao:"500g de frango + 500g de batata + Coca-Cola 2L",preco:88.90,precoOriginal:90.00,disponivel:true},
+    {id:'c3',nome:"Combo Amigos",descricao:"500g de filé de frango + 500g de batata frita",preco:74.90,precoOriginal:89.90,disponivel:true},
+    {id:'c4',nome:"Combo Tank",descricao:"500g de frango + 200g de batata frita",preco:55.90,disponivel:true},
+    {id:'c5',nome:"Combo X",descricao:"250g de frango + porção de batata",preco:39.90,precoOriginal:52.00,disponivel:true},
+    {id:'c6',nome:"Combo Individual 1",descricao:"200g de frango + porção individual de batata",preco:30.00,disponivel:true},
+    {id:'c7',nome:"Combo Individual 2",descricao:"Frango + batata, porção individual",preco:28.00,disponivel:true},
+    {id:'c8',nome:"Caixa 1,2kg + Tuchauá",descricao:"1,2kg de frango com batata + Tuchauá",preco:90.84,disponivel:true},
+    {id:'c9',nome:"1kg de Frango",descricao:"1kg de frango empanado",preco:80.00,disponivel:true},
+    {id:'c10',nome:"500g + Coca 600ml",descricao:"500g de frango + Coca-Cola 600ml",preco:47.90,disponivel:true},
+    {id:'c11',nome:"500g de Frango",descricao:"Meio quilo de frango empanado",preco:39.99,precoOriginal:50.00,disponivel:true},
+    {id:'c12',nome:"Anéis de Cebola",descricao:"300g de anéis de cebola empanados",preco:35.00,disponivel:true},
+    {id:'c13',nome:"Batata Frita",descricao:"300g de batata frita",preco:25.00,disponivel:true}
+  ],
+  molhos:[
+    {nome:"Barbecue",disponivel:true},{nome:"Mostarda e Mel",disponivel:true},
+    {nome:"Maionese da Casa",disponivel:true},{nome:"Ranch",disponivel:true},{nome:"Pimenta",disponivel:true}
+  ],
+  bebidas:[
+    {nome:"Coca-Cola 600ml",preco:8.00,disponivel:true},{nome:"Coca-Cola 2L",preco:15.00,disponivel:true},
+    {nome:"Tuchauá 2L",preco:12.00,disponivel:true},{nome:"Água",preco:4.00,disponivel:true}
+  ],
+  taxaEntrega:6.00,
+  formasPagamento:["Pix","Dinheiro","Cartão (na entrega)"]
+};
+
+let cardapioAtual = CARDAPIO_PADRAO;
+let carrinho = [];
+let molhos = {}; // {nome: qtd}
+let bebidas = {}; // {nome: qtd}
+let pagamentoSelecionado = null;
+const $ = id => document.getElementById(id);
+const fmt = v => "R$ " + (v||0).toFixed(2).replace('.',',');
+
+function totalCarrinho(){ return carrinho.reduce((s,i)=>s+i.combo.preco*i.qtd,0); }
+function totalMolhos(){ return 0; }
+function totalBebidas(){
+  return (cardapioAtual.bebidas||[]).filter(b=>b.disponivel!==false).reduce((s,b)=>{
+    return s + (bebidas[b.nome]||0) * (b.preco||0);
+  },0);
+}
+function totalGeral(){ return totalCarrinho() + totalBebidas() + taxaBairroAtual; }
+
+function renderCarrinho(){
+  const el = $('listaCarrinho');
+  if(!carrinho.length){ el.innerHTML='<div class="carrinho-vazio">Nenhum item adicionado ainda.<br>Escolha um combo abaixo 👇</div>'; return; }
+  el.innerHTML = carrinho.map((item,i)=>`
+    <div class="item-carrinho">
+      <div class="info">
+        <div class="nome">${item.combo.nome}</div>
+        <div class="detalhe">${item.combo.descricao||''}</div>
+        <div class="ctrl-qtd">
+          <button type="button" onclick="alterarQtd(${i},-1)">−</button>
+          <span class="qtd-num">${item.qtd}</span>
+          <button type="button" onclick="alterarQtd(${i},1)">+</button>
+        </div>
+        <div class="preco-item">${fmt(item.combo.preco*item.qtd)}</div>
+      </div>
+      <button class="btn-remover" type="button" onclick="removerItem(${i})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+      </button>
+    </div>`).join('');
+  atualizarTotal(); validar();
+}
+window.alterarQtd = (i,d)=>{ carrinho[i].qtd=Math.max(1,carrinho[i].qtd+d); renderCarrinho(); };
+window.removerItem = i=>{ carrinho.splice(i,1); renderCarrinho(); validar(); };
+
+function adicionarCombo(combo){
+  const ex = carrinho.find(c=>c.combo.id===combo.id);
+  if(ex) ex.qtd++; else carrinho.push({combo,qtd:1});
+  renderCarrinho(); validar();
+}
+
+function renderCombos(){
+  const lista = (cardapioAtual.combos||[]).filter(c=>c.disponivel!==false);
+  $('listaCombos').innerHTML = lista.map(c=>`
+    <div class="cartao-combo">
+      <span class="info">
+        <span class="nome">${c.nome}</span>
+        <span class="desc">${c.descricao||''}</span>
+      </span>
+      <span class="precos">
+        ${c.precoOriginal?`<span class="preco-original">${fmt(c.precoOriginal)}</span>`:''}
+        <span class="preco">${fmt(c.preco)}</span>
+      </span>
+      <button class="btn-adicionar" type="button" data-id="${c.id}">+ Adicionar</button>
+    </div>`).join('');
+  $('listaCombos').querySelectorAll('.btn-adicionar').forEach(btn=>{
+    btn.addEventListener('click',()=>{ const c=lista.find(x=>x.id===btn.dataset.id); if(c) adicionarCombo(c); });
+  });
+}
+
+function renderMolhos(){
+  const lista = (cardapioAtual.molhos||[]).filter(m=>m.disponivel!==false);
+  $('listaMolhos').innerHTML = lista.map(m=>`
+    <div class="item-qtd">
+      <span class="nome-item">${m.nome}</span>
+      <div class="ctrl-qtd">
+        <button type="button" onclick="alterarMolho('${m.nome}',-1)">−</button>
+        <span class="qtd-num" id="qtdMolho_${m.nome.replace(/\s/g,'_')}">${molhos[m.nome]||0}</span>
+        <button type="button" onclick="alterarMolho('${m.nome}',1)">+</button>
+      </div>
+    </div>`).join('');
+}
+window.alterarMolho = (nome,d)=>{
+  molhos[nome] = Math.max(0,(molhos[nome]||0)+d);
+  const el = document.getElementById('qtdMolho_'+nome.replace(/\s/g,'_'));
+  if(el) el.textContent = molhos[nome];
+  validar();
+};
+
+function renderBebidas(){
+  const lista = (cardapioAtual.bebidas||[]).filter(b=>b.disponivel!==false);
+  $('listaBebidas').innerHTML = lista.map(b=>`
+    <div class="item-qtd">
+      <span class="nome-item">${b.nome}</span>
+      <span class="preco-extra">${fmt(b.preco)} cada</span>
+      <div class="ctrl-qtd">
+        <button type="button" onclick="alterarBebida('${b.nome}',-1)">−</button>
+        <span class="qtd-num" id="qtdBebida_${b.nome.replace(/\s/g,'_')}">${bebidas[b.nome]||0}</span>
+        <button type="button" onclick="alterarBebida('${b.nome}',1)">+</button>
+      </div>
+    </div>`).join('');
+}
+window.alterarBebida = (nome,d)=>{
+  bebidas[nome] = Math.max(0,(bebidas[nome]||0)+d);
+  const el = document.getElementById('qtdBebida_'+nome.replace(/\s/g,'_'));
+  if(el) el.textContent = bebidas[nome];
+  atualizarTotal(); validar();
+};
+
+function renderPagamento(){
+  const formas = cardapioAtual.formasPagamento||["Pix","Dinheiro","Cartão (na entrega)"];
+  $('listaPagamento').innerHTML = formas.map((f,i)=>`
+    <button type="button" class="chip" data-forma="${f}">${iconePag(f)} ${f}</button>`).join('');
+  $('listaPagamento').querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      pagamentoSelecionado = btn.dataset.forma;
+      $('listaPagamento').querySelectorAll('.chip').forEach(b=>b.classList.remove('selecionado'));
+      btn.classList.add('selecionado');
+      $('campoTroco').classList.toggle('mostrar',/dinheiro/i.test(pagamentoSelecionado));
+      validar();
+    });
+  });
+}
+function iconePag(n){ if(/pix/i.test(n)) return '⬡'; if(/cart/i.test(n)) return '💳'; return '💵'; }
+
+function atualizarTotal(){
+  const t = totalGeral();
+  $('valorTotal').textContent = fmt(t);
+  $('totalParaTroco').textContent = fmt(t);
+}
+
+function validar(){
+  const temItens = carrinho.length > 0;
+  const temMolho = Object.values(molhos).some(q=>q>0);
+  const temPag = !!pagamentoSelecionado;
+  const temNome = $('campoNome').value.trim().length > 1;
+  const temTel = $('campoTelefone').value.replace(/\D/g,'').length >= 10;
+  const temRua = $('campoRua').value.trim().length > 2;
+  const temNum = $('campoNumero').value.trim().length > 0;
+  const temBairro = $('campoBairro').value.trim().length > 0;
+  $('botaoConfirmar').disabled = !(temItens&&temMolho&&temPag&&temNome&&temTel&&temRua&&temNum&&temBairro);
+  atualizarTotal();
+}
+['campoNome','campoTelefone','campoRua','campoNumero'].forEach(id=>$(id).addEventListener('input',validar));
+$('campoBairro').addEventListener('change', function(){
+  mostrarTaxaBairro(this.value);
+  validar();
+});
+
+/* Autocomplete SOMENTE Cacoal */
+const campoRua = $('campoRua'), campoBairro = $('campoBairro'), elSug = $('sugestoesEndereco');
+let timer=null, ultimasSug=[];
+campoRua.addEventListener('input',()=>{
+  clearTimeout(timer);
+  const t=campoRua.value.trim();
+  if(t.length<3){elSug.classList.remove('mostrar');return;}
+  elSug.innerHTML='<div class="sugestao-carregando">Buscando em Cacoal...</div>';
+  elSug.classList.add('mostrar');
+  timer=setTimeout(()=>buscarEnd(t),600);
+});
+async function buscarEnd(termo){
+  try{
+    const url=`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=br&q=${encodeURIComponent(termo+', Cacoal, Rondônia, Brasil')}`;
+    const dados=await fetch(url).then(r=>r.json());
+    // Filtrar APENAS resultados de Cacoal
+    const filtrados=dados.filter(d=>{
+      const txt=(d.display_name||'').toLowerCase();
+      return txt.includes('cacoal');
+    });
+    ultimasSug=filtrados;
+    if(!filtrados.length){elSug.innerHTML='<div class="sugestao-carregando">Nenhum endereço encontrado em Cacoal — pode digitar manualmente</div>';return;}
+    elSug.innerHTML=filtrados.map((d,i)=>`
+      <button type="button" class="sugestao-item" data-i="${i}">📍 <span>${d.display_name}</span></button>`).join('');
+    elSug.querySelectorAll('.sugestao-item').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const d=ultimasSug[+btn.dataset.i];
+        campoRua.value=d.address?.road||d.display_name.split(',')[0];
+        const b=d.address?.suburb||d.address?.neighbourhood||d.address?.city_district;
+        if(b) campoBairro.value=b;
+        elSug.classList.remove('mostrar'); validar();
+      });
+    });
+  }catch{elSug.innerHTML='<div class="sugestao-carregando">Erro ao buscar — digite manualmente</div>';}
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.campo-autocomplete')) elSug.classList.remove('mostrar');});
+
+
+/* ---- TAXAS POR BAIRRO ---- */
+let taxaBairroAtual = 0;
+const TAXAS_BAIRRO = {
+  "Alpha Parque":{gratis:false,taxa:6},"Alphaville":{gratis:false,taxa:8},
+  "Balneário Arco-Íris":{gratis:false,taxa:10},"Centro":{gratis:true,taxa:5},
+  "Chácaras Brizon":{gratis:false,taxa:9},"Conjunto Halley":{gratis:false,taxa:7},
+  "Eldorado":{gratis:false,taxa:6},"Floresta":{gratis:false,taxa:6},
+  "Habitar Brasil":{gratis:false,taxa:7},"Habitar Brasil II":{gratis:false,taxa:7},
+  "Incra":{gratis:false,taxa:8},"Industrial":{gratis:false,taxa:6},
+  "Jardim Bandeirantes":{gratis:false,taxa:6},"Jardim Clodoaldo":{gratis:false,taxa:6},
+  "Jardim Itália I":{gratis:false,taxa:7},"Jardim Itália II":{gratis:false,taxa:7},
+  "Jardim Limoeiro":{gratis:false,taxa:8},"Jardim São Pedro I":{gratis:false,taxa:7},
+  "Jardim São Pedro II":{gratis:false,taxa:7},"Jardim Saúde":{gratis:false,taxa:6},
+  "Josino Brito":{gratis:false,taxa:6},"Liberdade":{gratis:false,taxa:6},
+  "Morada do Bosque":{gratis:false,taxa:8},"Morada do Sol":{gratis:false,taxa:8},
+  "Nova Esperança":{gratis:false,taxa:7},"Novo Cacoal":{gratis:false,taxa:6},
+  "Novo Horizonte":{gratis:false,taxa:7},"Parque Fortaleza":{gratis:false,taxa:8},
+  "Princesa Isabel":{gratis:false,taxa:6},"Residencial Parque Alvorada":{gratis:false,taxa:7},
+  "Residencial Parque Brizon":{gratis:false,taxa:7},"Santo Antônio":{gratis:false,taxa:6},
+  "Sete de Setembro":{gratis:false,taxa:8},"Sociedade Bela Vista":{gratis:false,taxa:8},
+  "Teixeirão":{gratis:false,taxa:7},"Village do Sol":{gratis:false,taxa:7},
+  "Village do Sol II":{gratis:false,taxa:8},"Vista Alegre":{gratis:false,taxa:7},
+  "Outro bairro":{gratis:false,taxa:8}
+};
+
+function mostrarTaxaBairro(bairro){
+  const bloco = document.getElementById('taxaBloco');
+  if(!bairro){ bloco.style.display='none'; taxaBairroAtual=0; atualizarTotal(); return; }
+
+  // Tenta pegar do cardápio (admin pode ter atualizado)
+  let info = null;
+  if(cardapioAtual.bairros){
+    const b = cardapioAtual.bairros.find(b=>b.nome===bairro);
+    if(b) info = b;
+  }
+  if(!info) info = TAXAS_BAIRRO[bairro] || {gratis:false, taxa:6};
+
+  taxaBairroAtual = info.gratis ? 0 : (info.taxa || 0);
+  bloco.style.display = 'flex';
+
+  if(info.gratis){
+    bloco.style.background = 'rgba(122,154,82,0.15)';
+    bloco.style.border = '1.5px solid #7A9A52';
+    bloco.innerHTML = '🎉 <span>Taxa de entrega: <span style="text-decoration:line-through;color:var(--creme-fraco);font-family:var(--fonte-mono);">R$ '+info.taxa.toFixed(2).replace('.',',')+'</span> <span style="color:#7A9A52;">✓ GRÁTIS</span></span>';
+  } else {
+    bloco.style.background = 'rgba(232,163,61,0.08)';
+    bloco.style.border = '1.5px solid var(--borda)';
+    bloco.innerHTML = '🛵 <span>Taxa de entrega: <span style="color:var(--dourado-claro);font-family:var(--fonte-mono);">R$ '+taxaBairroAtual.toFixed(2).replace('.',',')+'</span></span>';
+  }
+  atualizarTotal();
+}
+/* ---- FIM TAXAS ---- */
+
+async function carregar(){
+  if(firebaseOk){
+    try{
+      const s=await getDoc(doc(db,'config','cardapio'));
+      if(s.exists()){
+        cardapioAtual=s.data();
+        // Garante que cada combo tenha id (o admin salva sem id)
+        if(cardapioAtual.combos){
+          cardapioAtual.combos=cardapioAtual.combos.map((c,i)=>({...c,id:c.id||('c'+(i+1))}));
+        }
+        // Garante que bairros existam
+        if(!cardapioAtual.bairros) cardapioAtual.bairros=[];
+      }
+    }
+    catch(e){ console.warn('cardápio padrão',e); }
+  }
+  renderCombos(); renderMolhos(); renderBebidas(); renderPagamento(); atualizarTotal();
+}
+carregar();
+
+$('botaoConfirmar').addEventListener('click',async()=>{
+  if(!firebaseOk){ alert('Sistema não conectado. Avise o responsável.'); return; }
+  $('botaoConfirmar').disabled=true; $('botaoConfirmar').textContent='Enviando...';
+  try{
+    const molhosSelecionados=Object.entries(molhos).filter(([,q])=>q>0).map(([n,q])=>({nome:n,qtd:q}));
+    const bebidasSelecionadas=Object.entries(bebidas).filter(([,q])=>q>0).map(([n,q])=>{
+      const b=(cardapioAtual.bebidas||[]).find(x=>x.nome===n);
+      return {nome:n,qtd:q,preco:b?.preco||0,subtotal:(b?.preco||0)*q};
+    });
+    const subtotal=totalCarrinho()+totalBebidas();
+    const taxa=taxaBairroAtual;
+    const total=subtotal+taxa;
+    const troco=/dinheiro/i.test(pagamentoSelecionado)?($('valorTroco').value||null):null;
+    const pedido={
+      cliente:{nome:$('campoNome').value.trim(),telefone:$('campoTelefone').value.trim()},
+      itens:carrinho.map(i=>({nome:i.combo.nome,preco:i.combo.preco,qtd:i.qtd,subtotal:i.combo.preco*i.qtd})),
+      molhos:molhosSelecionados,
+      bebidas:bebidasSelecionadas,
+      endereco:{rua:campoRua.value.trim(),numero:$('campoNumero').value.trim(),bairro:campoBairro.value.trim(),referencia:$('campoReferencia').value.trim()},
+      pagamento:pagamentoSelecionado,
+      troco:troco?parseFloat(troco):null,
+      observacoes:$('campoObs').value.trim(),
+      subtotal,taxaEntrega:taxa,taxaGratis:taxaBairroAtual===0&&$('campoBairro').value!=='',total,
+      status:'novo',origem:'link_cliente',criadoEm:serverTimestamp()
+    };
+    await addDoc(collection(db,'pedidos'),pedido);
+    mostrarConfirmacao(pedido);
+  }catch(e){
+    console.error(e); alert('Não foi possível enviar. Tente novamente.');
+    $('botaoConfirmar').disabled=false; $('botaoConfirmar').textContent='Confirmar pedido';
+  }
+});
+
+function mostrarConfirmacao(p){
+  const itens=p.itens.map(i=>`${i.qtd}x ${i.nome}`).join(', ');
+  const molhosTexto=p.molhos.map(m=>`${m.qtd}x ${m.nome}`).join(', ');
+  const bebidasTexto=p.bebidas.length?p.bebidas.map(b=>`${b.qtd}x ${b.nome}`).join(', '):'—';
+  $('resumoFinal').innerHTML=`
+    <div><span>Itens</span><b>${itens}</b></div>
+    <div><span>Molhos</span><b>${molhosTexto}</b></div>
+    <div><span>Bebidas</span><b>${bebidasTexto}</b></div>
+    <div><span>Endereço</span><b>${p.endereco.rua}, ${p.endereco.numero}</b></div>
+    <div><span>Pagamento</span><b>${p.pagamento}${p.troco?` · nota de ${fmt(p.troco)}`:''}</b></div>
+    <div><span>Taxa de entrega</span><b>${fmt(p.taxaEntrega)}</b></div>
+    <div class="total-linha"><span>Total</span><b>${fmt(p.total)}</b></div>`;
+  $('overlaySucesso').classList.add('mostrar');
+}
+$('botaoNovoPedido').addEventListener('click',()=>location.reload());
+</script>
+</body>
+</html>
